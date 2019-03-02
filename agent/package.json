@@ -1,0 +1,16 @@
+{
+  "name": "agent",
+  "version": "1.0.0",
+  "description": "controls a lamp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Hawley",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "node-eufy-api": "^0.1.0"
+  }
+}
