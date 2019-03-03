@@ -64,5 +64,5 @@ node_modules/
 # dotenv environment variables file
 .env
 
-site/.cache/
-site/dist/
+.cache/
+dist/
