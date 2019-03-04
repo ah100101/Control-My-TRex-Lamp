@@ -16,8 +16,6 @@ exports.updateLamp = functions.https.onRequest((req, res) => {
       on: true
     })
     .then((docRef) => {
-      console.log('lamp updated')
-      console.log(docRef)
       return res.send(200, 'T-Rex is Awake')
     })
     .catch(error => {
