@@ -4,7 +4,7 @@ const admin = require('firebase-admin')
 admin.initializeApp()
 
 exports.updateLamp = functions.https.onRequest((req, res) => {
-  res.set('Access-Control-Allow-Origin', 'http://localhost:1234')
+  res.set('Access-Control-Allow-Origin', 'https://controlmytrexlamp.netlify.com')
 
   if (req.method === 'OPTIONS') {
     res.set('Access-Control-Allow-Methods', 'GET')
@@ -15,7 +15,7 @@ exports.updateLamp = functions.https.onRequest((req, res) => {
     res.set('Access-Control-Allow-Origin', 'http://localhost:1234')
     // TODO: verify color being passed in is a valid value
     const color = req.query.color
-    const on = req.query.on
+    const on = !!req.query.on
 
     const firestore = admin.firestore()
     firestore
