@@ -47,7 +47,8 @@ setInterval(function () {
     lightState &&
     deviceState.connected &&
     deviceState.device.isConnected()) {
-
+    
+    // check if power on / off
     if (lightState.on && !deviceState.device.isPowerOn()) {
       deviceState.device.setPowerOn(true)
         .then(() => {
@@ -65,7 +66,26 @@ setInterval(function () {
         })
         .catch(error => console.error(error))
     }
+    //check if change color
   } else {
     console.error('device is not connected')
   }
 }, 6000)
+
+function hexToRgb(hex) {
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+        return r + r + g + g + b + b;
+    });
+
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
