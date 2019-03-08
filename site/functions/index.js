@@ -13,27 +13,32 @@ exports.updateLamp = functions.https.onRequest((req, res) => {
     res.status(204).send('')
   } else {
     res.set('Access-Control-Allow-Origin', 'https://controlmytrexlamp.netlify.com')
-    // TODO: verify color being passed in is a valid value
-    const color = req.query.color
+    
+    // only update if the color is valid
+    let color = 'FFF'
+    if (req.query.color && /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test('#' + req.query.color)) {
+      color = req.query.color 
+      
+      let on = true
+      
+      if (req.query.on === 'false' || !req.query.on) {
+        on = false
+      } else if (req.query.on === 'true' || req.query.on) {
+        on = true
+      }
 
-    let on = true
-    if (req.query.on === 'false' || !req.query.on) {
-      on = false
-    } else if (req.query.on === 'true' || req.query.on) {
-      on = true
-    }
-
-    const firestore = admin.firestore()
-    firestore
-      .collection('lamps')
-      .doc('trex')
-      .set({color, on})
-      .then((docRef) => {
-        return res.send(200)
-      })
-      .catch(error => {
-        console.error(error)
-        return res.send(500, error)
-      })
+      const firestore = admin.firestore()
+      firestore
+        .collection('lamps')
+        .doc('trex')
+        .set({color, on})
+        .then((docRef) => {
+          return res.send(200)
+        })
+        .catch(error => {
+          console.error(error)
+          return res.send(500, error)
+        })
+      }
   }
 })
