@@ -66,26 +66,18 @@ setInterval(function () {
         .catch(error => console.error(error))
     }
 
-    // if (lightState.color) {
-    //   // check if change color
-    //   let currentHexValue = rgbToHex(deviceState.device.getRgbColors())
+    if (lightState.color) {
+      let rgb = hexToRgb('#' + lightState.color)
 
-    //   if (lightState.color !== currentHexValue) {
-    //     let rgb = hexToRgb(lightState.color)
-
-    //     console.log('Changing color:')
-    //     console.log(rgb)
-
-    //     if (rgb && rgb.r && rgb.g && rgb.b) {
-    //       deviceState.device.setRgbColors(rgb.g, rgb.g, rgb.b)
-    //         .then(newColors => {
-    //           console.log('The color is now:', newColors)
-    //           deviceState.device.loadCurrentState()
-    //         })
-    //         .catch(error => console.error(error))
-    //     }
-    //   }
-    // }
+      if (rgb && rgb.r && rgb.g && rgb.b) {
+        deviceState.device.setRgbColors(rgb.g, rgb.g, rgb.b)
+          .then(newColors => {
+            console.log('The color is now:', newColors)
+            deviceState.device.loadCurrentState()
+          })
+          .catch(error => console.error(error))
+      }
+    }
   } else {
     console.error('device is not connected')
   }
@@ -103,13 +95,4 @@ function hexToRgb (hex) {
     g: parseInt(result[2], 16),
     b: parseInt(result[3], 16)
   } : null
-}
-
-function componentToHex (c) {
-  var hex = c.toString(16)
-  return hex.length == 1 ? '0' + hex : hex
-}
-
-function rgbToHex (r, g, b) {
-  return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }

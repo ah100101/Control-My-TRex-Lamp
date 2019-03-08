@@ -15,7 +15,13 @@ exports.updateLamp = functions.https.onRequest((req, res) => {
     res.set('Access-Control-Allow-Origin', 'https://controlmytrexlamp.netlify.com')
     // TODO: verify color being passed in is a valid value
     const color = req.query.color
-    const on = !!req.query.on
+
+    let on = true
+    if (req.query.on === 'false' || !req.query.on) {
+      on = false
+    } else if (req.query.on === 'true' || req.query.on) {
+      on = true
+    }
 
     const firestore = admin.firestore()
     firestore
@@ -23,7 +29,6 @@ exports.updateLamp = functions.https.onRequest((req, res) => {
       .doc('trex')
       .set({color, on})
       .then((docRef) => {
-        console.log('set status')
         return res.send(200)
       })
       .catch(error => {
