@@ -9,7 +9,7 @@
     <button 
       v-text='action'
       v-on:click='flipSwitch'></button> 
-    <input type='text' v-model='color'/>
+    <input type='text' v-model='color' v-on:change='makeUpdate(lightOn)' />
   </div>
   <script src="./index.js"></script>
 </body>
