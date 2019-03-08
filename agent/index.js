@@ -66,26 +66,26 @@ setInterval(function () {
         .catch(error => console.error(error))
     }
 
-    if (lightState.color) {
-      // check if change color
-      let currentHexValue = rgbToHex(deviceState.device.getRgbColors())
+    // if (lightState.color) {
+    //   // check if change color
+    //   let currentHexValue = rgbToHex(deviceState.device.getRgbColors())
 
-      if (lightState.color !== currentHexValue) {
-        let rgb = hexToRgb(lightState.color)
+    //   if (lightState.color !== currentHexValue) {
+    //     let rgb = hexToRgb(lightState.color)
 
-        console.log('Changing color:')
-        console.log(rgb)
+    //     console.log('Changing color:')
+    //     console.log(rgb)
 
-        if (rgb && rgb.r && rgb.g && rgb.b) {
-          deviceState.device.setRgbColors(rgb.g, rgb.g, rgb.b)
-            .then(newColors => {
-              console.log('The color is now:', newColors)
-              deviceState.device.loadCurrentState()
-            })
-            .catch(error => console.error(error))
-        }
-      }
-    }
+    //     if (rgb && rgb.r && rgb.g && rgb.b) {
+    //       deviceState.device.setRgbColors(rgb.g, rgb.g, rgb.b)
+    //         .then(newColors => {
+    //           console.log('The color is now:', newColors)
+    //           deviceState.device.loadCurrentState()
+    //         })
+    //         .catch(error => console.error(error))
+    //     }
+    //   }
+    // }
   } else {
     console.error('device is not connected')
   }

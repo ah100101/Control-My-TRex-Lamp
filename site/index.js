@@ -37,6 +37,8 @@ var app = new Vue({
       this.makeUpdate()
     },
     makeUpdate: function () {
+      console.log('new url')
+      console.log(this.url)
       fetch(this.url)
         .then(response => console.log(response))
         .catch(error => console.error(error))
