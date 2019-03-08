@@ -33,13 +33,14 @@ var app = new Vue({
   },
   methods: {
     flipSwitch: function () {
-      this.lightOn = !this.lightOn
-      this.makeUpdate()
+      // this.lightOn = !this.lightOn
+      this.makeUpdate(!this.lightOn)
     },
-    makeUpdate: function () {
+    makeUpdate: function (onOrOff) {
       console.log('new url')
-      console.log(this.url)
-      fetch(this.url)
+      let url = `https://us-central1-control-my-trex-lamp-f1a1e.cloudfunctions.net/updateLamp?on=${onOrOff}&color=${this.color}`
+      console.log(url)
+      fetch(url)
         .then(response => console.log(response))
         .catch(error => console.error(error))
     }
@@ -51,9 +52,6 @@ var app = new Vue({
       } else {
         return 'On'
       }
-    },
-    url: function () {
-      return `https://us-central1-control-my-trex-lamp-f1a1e.cloudfunctions.net/updateLamp?on=${this.lightOn}&color=${this.color}`
     }
   }
 })
