@@ -12,7 +12,7 @@ exports.updateLamp = functions.https.onRequest((req, res) => {
     res.set('Access-Control-Max-Age', '3600')
     res.status(204).send('')
   } else {
-    res.set('Access-Control-Allow-Origin', 'http://localhost:1234')
+    res.set('Access-Control-Allow-Origin', 'https://controlmytrexlamp.netlify.com')
     // TODO: verify color being passed in is a valid value
     const color = req.query.color
     const on = !!req.query.on
