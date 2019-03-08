@@ -24,6 +24,37 @@ db.collection('lamps')
   .onSnapshot(function (doc) {
     lightState = doc.data()
     console.log(lightState)
+
+    if (deviceState.device &&
+      lightState &&
+      deviceState.connected &&
+      deviceState.device.isConnected()) {
+
+      if (lightState.color) {
+        setColor(hexToRgb(lightState.color))
+          .then(result => {
+            // check if power on / off
+            if (lightState.on && !deviceState.device.isPowerOn()) {
+              return turnOn()
+                .then(() => {
+                  console.log('light turned on')
+                  lightState.on = true
+                  return deviceState.device.loadCurrentState()
+                })
+            } else if (!lightState.on && deviceState.device.isPowerOn()) {
+              return turnOff()
+                .then(() => {
+                  console.log('light turned off')
+                  lightState.on = false
+                  return deviceState.device.loadCurrentState()
+                })
+            }
+          })
+          .catch(error => console.error(error))
+      }
+    } else {
+      console.error('device is not connected')
+    }
   })
 
 api.loadDevices(process.env.EUFY_USERNAME, process.env.EUFY_PASSWORD).then(devices => {
@@ -41,47 +72,24 @@ api.loadDevices(process.env.EUFY_USERNAME, process.env.EUFY_PASSWORD).then(devic
 })
 
 setInterval(function () {
-  console.log(lightState)
-
-  if (deviceState.device &&
-    lightState &&
-    deviceState.connected &&
-    deviceState.device.isConnected()) {
-    // check if power on / off
-    if (lightState.on && !deviceState.device.isPowerOn()) {
-      deviceState.device.setPowerOn(true)
-        .then(() => {
-          console.log('light turned on')
-          lightState.on = true
-          deviceState.device.loadCurrentState()
-        })
-        .catch(error => console.error(error))
-    } else if (!lightState.on && deviceState.device.isPowerOn()) {
-      deviceState.device.setPowerOn(false)
-        .then(() => {
-          console.log('light turned off')
-          lightState.on = false
-          deviceState.device.loadCurrentState()
-        })
-        .catch(error => console.error(error))
-    }
-
-    if (lightState.color) {
-      let rgb = hexToRgb('#' + lightState.color)
-
-      if (rgb && rgb.r && rgb.g && rgb.b) {
-        deviceState.device.setRgbColors(rgb.g, rgb.g, rgb.b)
-          .then(newColors => {
-            console.log('The color is now:', newColors)
-            deviceState.device.loadCurrentState()
-          })
-          .catch(error => console.error(error))
-      }
-    }
-  } else {
-    console.error('device is not connected')
-  }
+  
 }, 6000)
+
+function turnOn () {
+  return deviceState.device.setPowerOn(true)
+}
+
+function turnOff () {
+  return deviceState.device.setPowerOn(false)
+}
+
+function setColor(rgb) {
+  return deviceState.device.setRgbColors(rgb.r, rgb.g, rgb.b)
+}
+
+function def(value) {
+  return value !== undefined
+}
 
 function hexToRgb (hex) {
   var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
