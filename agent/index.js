@@ -76,15 +76,15 @@ setInterval(function () {
 }, 6000)
 
 function turnOn () {
-  return deviceState.device.setPowerOn(true)
+  return deviceState.device.setState({ power: true, brightness: 1, temperature: 100, colors: { red: 255, green: 255, blue: 255 } })
 }
 
 function turnOff () {
-  return deviceState.device.setPowerOn(false)
+  return deviceState.device.setState({ power: false, brightness: 1, temperature: 100, colors: { red: 255, green: 255, blue: 255 } })
 }
 
 function setColor(rgb) {
-  return deviceState.device.setRgbColors(rgb.r, rgb.g, rgb.b)
+  return deviceState.device.setState({ brightness: 1, temperature: 100, colors: { red: rgb.r, green: rgb.g, blue: rgb.b } })
 }
 
 function def(value) {
