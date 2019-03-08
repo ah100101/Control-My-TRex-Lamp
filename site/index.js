@@ -18,7 +18,7 @@ var app = new Vue({
   data: {
     lightOn: false,
     // locked: false,
-    color: '#FFF'
+    color: ''
   },
   mounted: function () {
     let state = this
