@@ -31,7 +31,7 @@ db.collection('lamps')
       deviceState.device.isConnected()) {
 
       if (lightState.color) {
-        setColor(hexToRgb(lightState.color))
+        setColor(hexToRgb('#' + lightState.color))
           .then(result => {
             // check if power on / off
             if (lightState.on && !deviceState.device.isPowerOn()) {
@@ -76,15 +76,18 @@ setInterval(function () {
 }, 6000)
 
 function turnOn () {
-  return deviceState.device.setState({ power: true, brightness: 1, temperature: 100, colors: { red: 255, green: 255, blue: 255 } })
+  let rgb = deviceState.device.getRgbColors()
+  return deviceState.device.setState({ power: true, brightness: 1, colors: { red: rgb.r, green: rgb.g, blue: rgb.b } })
 }
 
 function turnOff () {
-  return deviceState.device.setState({ power: false, brightness: 1, temperature: 100, colors: { red: 255, green: 255, blue: 255 } })
+  let rgb = deviceState.device.getRgbColors()
+  return deviceState.device.setState({ power: false, brightness: 1, colors: { red: rgb.r, green: rgb.g, blue: rgb.b } })
 }
 
 function setColor(rgb) {
-  return deviceState.device.setState({ brightness: 1, temperature: 100, colors: { red: rgb.r, green: rgb.g, blue: rgb.b } })
+  console.log(rgb)
+  return deviceState.device.setState({ brightness: 1, colors: { red: rgb.r, green: rgb.g, blue: rgb.b } })
 }
 
 function def(value) {
